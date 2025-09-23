@@ -8,8 +8,8 @@
   <title>{{ $title ?? 'Page Title' }}</title>
 </head>
 
-<body>
-  <div class="w-xl container mx-auto mt-5">
+<body class="flex min-h-screen items-center justify-center bg-gray-100">
+  <div class="mx-auto w-full max-w-xl px-4 py-8">
     {{ $slot }}
   </div>
 </body>
