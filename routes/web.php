@@ -19,6 +19,6 @@ Route::get('/todo/{id}', function ($id) {
 Route::get('/register', [RegistrationController::class, 'show'])->name('register');
 Route::post('/register', [RegistrationController::class, 'register'])->name('register.register');
 
-Route::get('/login', [SessionController::class, 'show'])->name('login');
-Route::post('/login', [SessionController::class, 'authenticate'])->name('login.authenticate');
-Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
+Route::get('/login', [SessionController::class, 'show'])->name('login')->middleware('guest');
+Route::post('/login', [SessionController::class, 'authenticate'])->name('login.authenticate')->middleware('guest');
+Route::post('/logout', [SessionController::class, 'destroy'])->name('logout')->middleware('auth');
