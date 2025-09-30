@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+use Illuminate\Console\View\TaskResult;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -12,23 +14,24 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $tasks = Task::where('user_id', request()->user()->id)->latest()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('tasks.index', compact('tasks'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        //
+        $data = array_merge(
+            $request->validated(),
+            ['user_id' => request()->user()->id]
+        );
+
+        Task::create($data);
+
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -36,7 +39,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $task->load(['user', 'notes']);
+
+        return view('tasks.show', compact('task'));
     }
 
     /**

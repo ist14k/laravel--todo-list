@@ -18,11 +18,15 @@
     <!-- Task Status & Title -->
     <div class="mb-5">
       <div class="flex items-start gap-3">
-        <input type="checkbox" checked
+        <input type="checkbox" {{ $task->completed ? 'checked' : '' }}
           class="mt-0.5 h-5 w-5 rounded border-gray-300 text-gray-600 focus:ring-gray-500" />
         <div class="flex-1">
-          <h2 class="text-xl font-semibold text-gray-500 line-through">
-            Complete project documentation
+          <h2 @class([
+              'text-xl font-semibold',
+              'text-gray-800' => !$task->completed,
+              'line-through text-gray-500' => $task->completed,
+          ])>
+            {{ $task->name }}
           </h2>
         </div>
       </div>
@@ -32,19 +36,18 @@
     <div class="grid grid-cols-1 gap-3 border-t border-gray-200 pt-5 md:grid-cols-2">
       <div>
         <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">Status</h3>
-        <span class="mt-1 inline-flex rounded-full bg-gray-200 px-3 py-1 text-xs font-medium text-gray-700">
-          Completed
-        </span>
+        @if ($task->completed)
+          <span
+            class="mt-1 inline-block rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-800">Completed</span>
+        @else
+          <span
+            class="mt-1 inline-block rounded-full bg-red-100 px-2.5 py-1 text-xs font-medium text-red-800">Incomplete</span>
+        @endif
       </div>
 
       <div>
         <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">Created</h3>
-        <p class="mt-1 text-sm text-gray-600">Sep 20, 2025 at 9:30 AM</p>
-      </div>
-
-      <div>
-        <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">Completed</h3>
-        <p class="mt-1 text-sm text-gray-600">Sep 22, 2025 at 2:15 PM</p>
+        <p class="mt-1 text-sm text-gray-600">{{ $task->created_at->format('M d, Y \a\t h:i A') }}</p>
       </div>
     </div>
   </div>
@@ -79,31 +82,24 @@
 
     <!-- Notes List -->
     <div class="space-y-3">
-      <!-- Note 1 -->
-      <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
-        <div class="mb-2 flex items-center justify-between">
-          <span class="text-xs text-gray-500">Sep 21, 2025 at 10:15 AM</span>
-          <div class="flex gap-2">
-            <button class="text-xs font-medium text-gray-600 hover:text-gray-800">Edit</button>
-            <button class="text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
+      @forelse ($task->notes as $note)
+        <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="text-xs text-gray-500">Sep 21, 2025 at 10:15 AM</span>
+            <div class="flex gap-2">
+              <button class="text-xs font-medium text-gray-600 hover:text-gray-800">Edit</button>
+              <button class="text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
+            </div>
           </div>
+          <p class="text-sm text-gray-700">Started working on the API documentation. Need to cover authentication
+            endpoints
+            and error handling.</p>
         </div>
-        <p class="text-sm text-gray-700">Started working on the API documentation. Need to cover authentication
-          endpoints
-          and error handling.</p>
-      </div>
-
-      <!-- Note 2 -->
-      <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
-        <div class="mb-2 flex items-center justify-between">
-          <span class="text-xs text-gray-500">Sep 22, 2025 at 1:30 PM</span>
-          <div class="flex gap-2">
-            <button class="text-xs font-medium text-gray-600 hover:text-gray-800">Edit</button>
-            <button class="text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
-          </div>
+      @empty
+        <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+          <p class="text-sm text-gray-600">No notes yet. Add your first note above.</p>
         </div>
-        <p class="text-sm text-gray-700">Finished all sections. Added examples and code snippets. Ready for review.</p>
-      </div>
+      @endforelse
 
       <!-- Add Note Form (initially hidden) -->
       <div class="hidden rounded-lg border border-gray-300 bg-white p-3">
