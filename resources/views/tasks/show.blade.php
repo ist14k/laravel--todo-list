@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between">
       <h1 class="text-3xl font-semibold text-gray-800">Task Details</h1>
       <div class="flex gap-2">
-        <a href="#"
+        <a href="{{ route('tasks.index') }}"
           class="rounded-lg bg-gray-800 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600">
           ← Back to List
         </a>
@@ -12,7 +12,7 @@
           <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
-              class="rounded-lg bg-gray-400 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600">
+              class="cursor-pointer rounded-lg bg-gray-400 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600">
               Logout
             </button>
           </form>
@@ -25,19 +25,13 @@
   <div class="mb-5 rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
     <!-- Task Status & Title -->
     <div class="mb-5">
-      <div class="flex items-start gap-3">
-        <input type="checkbox" {{ $task->completed ? 'checked' : '' }}
-          class="mt-0.5 h-5 w-5 rounded border-gray-300 text-gray-600 focus:ring-gray-500" />
-        <div class="flex-1">
-          <h2 @class([
-              'text-xl font-semibold',
-              'text-gray-800' => !$task->completed,
-              'line-through text-gray-500' => $task->completed,
-          ])>
-            {{ $task->name }}
-          </h2>
-        </div>
-      </div>
+      <h2 @class([
+          'text-xl font-semibold',
+          'text-gray-800' => !$task->completed,
+          'line-through text-gray-500' => $task->completed,
+      ])>
+        {{ $task->name }}
+      </h2>
     </div>
 
     <!-- Task Meta Information -->
@@ -63,7 +57,7 @@
   <!-- Action Buttons -->
   <div class="mb-5 flex flex-wrap gap-2.5">
     <button type="button"
-      class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600">
+      class="cursor-pointer rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600">
       Mark as Incomplete
     </button>
 
@@ -73,7 +67,7 @@
     </a>
 
     <button type="button" onclick="return confirm('Are you sure you want to delete this task?')"
-      class="rounded-lg border border-gray-400 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500">
+      class="cursor-pointer rounded-lg border border-gray-400 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500">
       Delete Task
     </button>
   </div>
@@ -83,7 +77,7 @@
     <div class="mb-3 flex items-center justify-between">
       <h3 class="text-lg font-medium text-gray-800">Notes</h3>
       <button type="button" onclick="toggleNoteForm()"
-        class="rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600">
+        class="cursor-pointer rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600">
         Add Note
       </button>
     </div>
@@ -100,11 +94,11 @@
         @enderror
         <div class="mt-3 flex gap-2">
           <button type="submit"
-            class="rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900">
+            class="cursor-pointer rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900">
             Save Note
           </button>
           <button type="button" onclick="toggleNoteForm()"
-            class="rounded-lg border border-gray-300 px-3.5 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100">
+            class="cursor-pointer rounded-lg border border-gray-300 px-3.5 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100">
             Cancel
           </button>
         </div>
@@ -121,7 +115,7 @@
               @csrf
               @method('DELETE')
               <button type="submit" onclick="return confirm('Are you sure you want to delete this note?')"
-                class="text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
+                class="cursor-pointer text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
             </form>
           </div>
           <p class="text-sm text-gray-700">{{ $note->content }}</p>
