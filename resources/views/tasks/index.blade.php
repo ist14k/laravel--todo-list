@@ -56,8 +56,12 @@
     @forelse ($tasks as $task)
       <div
         class="group flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 transition-all hover:border-gray-300 hover:shadow-sm">
-        <input {{ $task->completed ? 'checked' : '' }} type="checkbox"
-          class="h-5 w-5 cursor-pointer rounded border-gray-300 text-gray-900 transition-all focus:ring-2 focus:ring-gray-400 focus:ring-offset-0" />
+        <form action="{{ route('tasks.toggle', $task) }}" method="POST">
+          @csrf
+          @method('PATCH')
+          <input {{ $task->completed ? 'checked' : '' }} type="checkbox" onchange="this.form.submit()"
+            class="h-5 w-5 cursor-pointer rounded border-gray-300 text-gray-900 transition-all focus:ring-2 focus:ring-gray-400 focus:ring-offset-0" />
+        </form>
         <a href="{{ route('tasks.show', $task) }}" @class([
             'flex-1 text-sm font-medium transition-colors',
             'text-gray-900 hover:text-gray-700' => !$task->completed,

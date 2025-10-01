@@ -76,13 +76,21 @@
     <!-- Action Buttons -->
     <div class="border-t border-gray-100 bg-gray-50 px-6 py-4">
       <div class="flex flex-wrap gap-3">
-        <button type="button"
-          class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          Mark as Incomplete
-        </button>
+        <form action="{{ route('tasks.toggle', $task) }}" method="POST">
+          @csrf
+          @method('PATCH')
+          <button type="submit"
+            class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            @if ($task->completed)
+              Mark as Incomplete
+            @else
+              Mark as Complete
+            @endif
+          </button>
+        </form>
 
         <a href="{{ route('tasks.edit', $task) }}"
           class="inline-flex items-center gap-2 rounded-lg border-2 border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">

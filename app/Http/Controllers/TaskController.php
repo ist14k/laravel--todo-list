@@ -72,6 +72,18 @@ class TaskController extends Controller
     }
 
     /**
+     * Toggle the task completion status.
+     */
+    public function toggle(Task $task)
+    {
+        $task->update([
+            'completed' => !$task->completed,
+        ]);
+
+        return back()->with('success', 'Task status updated successfully!');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Task $task)
