@@ -49,8 +49,12 @@
         <div class="flex gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
           <button
             class="rounded px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-800">Edit</button>
-          <button
-            class="rounded px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-700">Delete</button>
+          <form action="{{ route('tasks.destroy', $task) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" onclick="return confirm('Are you sure you want to delete this task?')"
+              class="rounded px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-700">Delete</button>
+          </form>
         </div>
       </div>
     @empty

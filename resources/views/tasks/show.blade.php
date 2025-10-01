@@ -66,10 +66,14 @@
       Edit Task
     </a>
 
-    <button type="button" onclick="return confirm('Are you sure you want to delete this task?')"
-      class="cursor-pointer rounded-lg border border-gray-400 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500">
-      Delete Task
-    </button>
+    <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline">
+      @csrf
+      @method('DELETE')
+      <button type="submit" onclick="return confirm('Are you sure you want to delete this task?')"
+        class="cursor-pointer rounded-lg border border-gray-400 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500">
+        Delete Task
+      </button>
+    </form>
   </div>
 
   <!-- Notes Section -->

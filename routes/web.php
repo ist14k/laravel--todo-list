@@ -19,6 +19,7 @@ Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index')->mid
 
 Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store')->middleware('auth');
 Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show')->middleware('auth');
+Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy')->middleware('auth');
 
 Route::post('/tasks/{task}/notes', [NoteController::class, 'store'])->name('notes.store')->middleware('auth');
 Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy')->middleware('auth');
