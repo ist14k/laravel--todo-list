@@ -1,8 +1,16 @@
 <x-layouts.app>
   <!-- Header -->
-  <div class="mb-6 border-b-2 border-gray-300 pb-3">
+  <div class="mb-6 flex items-center justify-between border-b-2 border-gray-300 pb-3">
     <h1 class="text-3xl font-semibold text-gray-800">Your To Do List</h1>
-    <p class="mt-1 text-sm text-gray-600">Keep track of your daily tasks</p>
+    @auth
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit"
+          class="mt-1 rounded-lg bg-gray-400 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600">
+          Logout
+        </button>
+      </form>
+    @endauth
   </div>
 
   <!-- Add Task Form -->

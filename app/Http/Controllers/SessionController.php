@@ -22,7 +22,7 @@ class SessionController extends Controller
         if (Auth::attempt($data)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('todo.index');
+            return redirect()->route('tasks.index');
         }
 
         return back()->withErrors([
@@ -32,6 +32,11 @@ class SessionController extends Controller
 
     public function destroy(Request $request)
     {
-        // Logic for logging out the user
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

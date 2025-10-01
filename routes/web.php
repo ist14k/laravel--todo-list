@@ -3,10 +3,15 @@
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TaskController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('tasks.index');
+    if (Auth::check()) {
+        return redirect()->route('tasks.index');
+    }
+
+    return view('welcome');
 })->name('home');
 
 Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index')->middleware('auth');
