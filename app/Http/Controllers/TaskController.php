@@ -49,7 +49,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -57,7 +57,18 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'completed' => 'nullable|boolean',
+        ]);
+
+        $task->update([
+            'name' => $validated['name'],
+            'completed' => $request->has('completed'),
+        ]);
+
+        return redirect()->route('tasks.show', $task)
+            ->with('success', 'Task updated successfully!');
     }
 
     /**
