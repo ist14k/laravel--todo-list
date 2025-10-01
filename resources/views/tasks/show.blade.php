@@ -82,10 +82,33 @@
   <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
     <div class="mb-3 flex items-center justify-between">
       <h3 class="text-lg font-medium text-gray-800">Notes</h3>
-      <button type="button"
+      <button type="button" onclick="toggleNoteForm()"
         class="rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600">
         Add Note
       </button>
+    </div>
+
+    <!-- Add Note Form -->
+    <div id="noteForm" class="mb-4 hidden rounded-lg border border-gray-300 bg-white p-3">
+      <form action="{{ route('notes.store', $task) }}" method="POST">
+        @csrf
+        <textarea name="content" required
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-800 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+          rows="3" placeholder="Add a note about this task..."></textarea>
+        @error('content')
+          <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+        @enderror
+        <div class="mt-3 flex gap-2">
+          <button type="submit"
+            class="rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900">
+            Save Note
+          </button>
+          <button type="button" onclick="toggleNoteForm()"
+            class="rounded-lg border border-gray-300 px-3.5 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
 
     <!-- Notes List -->
@@ -93,50 +116,29 @@
       @forelse ($task->notes as $note)
         <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
           <div class="mb-2 flex items-center justify-between">
-            <span class="text-xs text-gray-500">Sep 21, 2025 at 10:15 AM</span>
-            <div class="flex gap-2">
-              <button class="text-xs font-medium text-gray-600 hover:text-gray-800">Edit</button>
-              <button class="text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
-            </div>
+            <span class="text-xs text-gray-500">{{ $note->created_at->format('M d, Y \a\t h:i A') }}</span>
+            <form action="{{ route('notes.destroy', $note) }}" method="POST" class="inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" onclick="return confirm('Are you sure you want to delete this note?')"
+                class="text-xs font-medium text-gray-500 hover:text-gray-700">Delete</button>
+            </form>
           </div>
-          <p class="text-sm text-gray-700">Started working on the API documentation. Need to cover authentication
-            endpoints
-            and error handling.</p>
+          <p class="text-sm text-gray-700">{{ $note->content }}</p>
         </div>
       @empty
         <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
           <p class="text-sm text-gray-600">No notes yet. Add your first note above.</p>
         </div>
       @endforelse
-
-      <!-- Add Note Form (initially hidden) -->
-      <div class="hidden rounded-lg border border-gray-300 bg-white p-3">
-        <textarea
-          class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-800 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
-          rows="3" placeholder="Add a note about this task..."></textarea>
-        <div class="mt-3 flex gap-2">
-          <button type="button"
-            class="rounded-lg bg-gray-800 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-900">
-            Save Note
-          </button>
-          <button type="button"
-            class="rounded-lg border border-gray-300 px-3.5 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100">
-            Cancel
-          </button>
-        </div>
-      </div>
-
-      <!-- Empty State -->
-      <div class="hidden py-6 text-center">
-        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-          <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
-        </div>
-        <p class="text-xs text-gray-600">No notes yet. Add your first note above.</p>
-      </div>
     </div>
   </div>
+
+  <script>
+    function toggleNoteForm() {
+      const form = document.getElementById('noteForm');
+      form.classList.toggle('hidden');
+    }
+  </script>
 
 </x-layouts.app>
